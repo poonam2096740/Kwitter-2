@@ -29,13 +29,27 @@ function getData() { firebase.database().ref("/"+room_name).on('value', function
 //Start code
       console.log(firebase_message_id);
       console.log(message_data);
-      name = message_data['name'];
+      fname = message_data['name'];
       message = message_data['message'];
       like = message_data['like'];
-      name_with_tag = "<h4> " + name+"<img class='user-tick'"
+      name_with_tag = "<h4> " + fname+"<img class='user-tick' src='tick.png'></h4>";
+      message_with_tag = "<h4 class='message_h4'> " + message + "</h4>";
+      like_with_tag = "<button class='btn btn-warning' id=" + firebase_message_id + "value=" + like + "onclick= 'updateLike(this.id)' >";
+      span_with_tag = "<span class='glyphicon glyphicon-thumbs-up'>Likes:" + like + "</span></button> <hr>";
+      row = name_with_tag + message_with_tag + like_with_tag + span_with_tag;
+      document.getElementById("output").innerHTML += row;
 //End code
-      } });  }); }
+      }  });  }); }
 getData();
+
+function updateLike(message_id){
+      console.log("Click on like button -" + message_id);
+      button_id = message_id;
+      likes = document.getElementById("button_id").value;
+      updatedLikes = Number(likes) ++;
+      console.log(updatedLikes);
+      firebase.database().ref(room_name).child(message_id).update({like: updatedLikes});
+}
 function logout() {
       localStorage.removeItem("user_name");
       localStorage.removeItem("room_name");
